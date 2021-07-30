@@ -1,14 +1,16 @@
-import React, { useState} from 'react';
+import React, {useState } from 'react';
 
 import { loginApi } from '../Api/func/user';
 import '../../src/style.css'
-import {Redirect} from "react-router-dom";
+import { Link, Redirect, useHistory } from "react-router-dom";
 
 
 const Login = (props) => {
+    let history = useHistory();
+
     const [tfEmail, setEmail] = useState("");
     const [tfPassword, setPassword] = useState("");
-    const [redirect, setRedirect] = useState(false);
+
 
     const onSubmit = async () => {
         const res = await loginApi({
@@ -17,14 +19,9 @@ const Login = (props) => {
         });
         if (res.data != null) {
             localStorage.setItem("TOKEN", res.data.jwtToken);
-            console.log(res.data.jwtToken);
-            setRedirect(true)
+            console.log(res.data);
+            history.push("/home")
         }
-
-    }
-
-    if(redirect){
-        return <Redirect to="/home"/>;
     }
 
     return (
@@ -34,7 +31,7 @@ const Login = (props) => {
                     <div className="row justify-content-center">
                         <div className="col-md-6 col-lg-4">
                             <div className="login-wrap py-5">
-                                <div className="align-items-center justify-content-center"/>
+                                <div className="align-items-center justify-content-center" />
                                 <p className="text-center">LOGIN SYSTEM</p>
 
                                 <div className="form-group">
@@ -50,7 +47,7 @@ const Login = (props) => {
                                 </div>
                                 <div className="w-100 text-center mt-4 text">
                                     <p className="mb-0">Don't have an account?</p>
-                                    <a href="/register">Sign Up</a>
+                                    <Link to="/register">Sign Up</Link>
                                 </div>
                             </div>
                         </div>

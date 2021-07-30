@@ -1,15 +1,13 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import MainUrl from './router/MainUrl';
+import HomeUrl from './router/HomeUrl';
 
-
-const App = () => {
+function App() {
     return (
         <div>
-            <MainUrl/>
+            <HomeUrl/>
         </div>
     );
-
 }
 
 export default App;

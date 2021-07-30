@@ -1,5 +1,5 @@
 
-import { PostLogin, PostData, DeleteData, GetData, PostRegister } from '../helpers';
+import { PostLogin, PutData, PostData, DeleteData, GetData, PostRegister } from '../helpers';
 import url from '../url'
 
 export const loginApi = async (body) =>
@@ -22,7 +22,44 @@ export const deleteBoardApi = async (body) =>
     DeleteData(url.urlBoardDelete, body)
         .then(res => res)
         .catch(err => err)
+export const getAllBoard = async (body) =>
+    GetData(url.urlGetAllBoard, body)
+        .then(res => res)
+        .catch(err => err)
 
+export const getAllWorkList = async (body) =>
+    GetData(url.urlGetAllWorkList, body)
+        .then(res => res)
+        .catch(err => err)
+
+export const createBoard = async (body) =>
+    PostData(url.urlCreateBoard, body)
+        .then(res => res)
+        .catch(err => err)
+export const createWorkList = async (body) =>
+    PostData(url.urlCreateWorkList, body)
+        .then(res => res)
+        .catch(err => err)
+export const updateDisplayOrderWorkList = async (body) =>
+    PutData(url.updateDisplayOrderWorkList, body)
+        .then(res => res)
+        .catch(err => err)
+export const renameWorkList = async (body) =>
+    await PutData(url.urlRenameWorkList, body)
+        .then(res => res)
+        .catch(err => err)
+export const createTask = async (body) =>
+    PostData(url.urlCreateTask, body)
+        .then(res => res)
+        .catch(err => err)
+export const updateDisplayOrderTask = async (body) =>
+    PutData(url.urlupdateDisplayOrderTask, body)
+        .then(res => res)
+        .catch(err => err)
+export const deleteWorkList = async (body) =>
+    DeleteData(url.urlDeleteWorkList, body)
+        .then(res => res)
+        .catch(err => err)
 
 
 

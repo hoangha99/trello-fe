@@ -70,3 +70,13 @@
 .form-group {
     margin-bottom: 1rem;
 }
+ul { /* định nghĩa một list / tức danh sách */
+    list-style-type: none; /* kiểu của các dòng trong danh sách là không có gì đầu dòng */
+    margin: 0; /* thụt lề bằng 0 */
+    padding: 0; /* vùng đệm để đẩy thành phần chứa bên trong thụt vô bằng 0 */
+    overflow: hidden; /* nếu chữ/ hình bị tràn ra ngoài, cắt bỏ */
+}
+
+li { /* định nghĩ cho các dòng trong danh sách */
+    float: left; /* cho các dòng trôi nổi về góc bên trái như những cục shit trôi sông tấp vào bờ trái */
+}

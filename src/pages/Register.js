@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { registerApi } from '../Api/func/user';
 import '../../src/style.css'
 import { Link, Redirect } from "react-router-dom";
@@ -16,18 +16,18 @@ const Register = (props) => {
             password: tfPassword,
             rePassword: rePassword
         });
-        if (res.data !=null) {
+        if (res.data != null) {
             console.log("Success");
             setRedirect(true)
         }
-        else{
+        else {
             alert("Trùng tên tài khoản")
         }
 
     }
 
     if (redirect) {
-        return <Redirect to="/" />;
+        return <Redirect to="/login" />;
     }
 
     return (

@@ -15,6 +15,7 @@ export async function GetData(url, data) {
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + token,
     },
+    
     params: {
       ...data,
     },
@@ -80,8 +81,6 @@ export async function PostLogin(url, json) {
 
 export async function PostData(url, json, isAuth = true) {
   const token= localStorage.getItem("TOKEN");
-
-  console.log(token);
   let myRequest = {
     method: 'post',
     url,
