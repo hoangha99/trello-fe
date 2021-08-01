@@ -159,7 +159,7 @@ function List(props) {
                                 </Dropdown>
                             </div>
                             <div className="card-list">
-                                <Cards task={list.tasks} workListId={list.workListId} onCardDrop={onCardDrop} />
+                                <Cards task={list.tasks} workListId={list.workListId} reload={reload} onCardDrop={onCardDrop} />
                             </div>
                         </div>
                     </Draggable>

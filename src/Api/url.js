@@ -14,6 +14,7 @@ const url = {
     updateDisplayOrderWorkList: root + "work-list/update-display-order",
     urlRenameWorkList: root + "work-list/rename",
     urlupdateDisplayOrderTask: root + "task/update-display-order",
-    urlDeleteWorkList: root + "work-list/delete"
+    urlDeleteWorkList: root + "work-list/delete",
+    urlGetAllComment: root + "comment/get-all",
 }
 export default url;

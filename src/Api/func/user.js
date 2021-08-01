@@ -60,6 +60,10 @@ export const deleteWorkList = async (body) =>
     DeleteData(url.urlDeleteWorkList, body)
         .then(res => res)
         .catch(err => err)
+export const getComments = async (body) =>
+    GetData(url.urlGetAllComment, body)
+        .then(res => res)
+        .catch(err => err)
 
 
 
