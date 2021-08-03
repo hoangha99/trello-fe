@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { createBoard, getAllBoard } from '../Api/func/user';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../src/style.css';
-import { Link, useHistory } from 'react-router-dom';
+import { Link,} from 'react-router-dom';
 import Header from './Header';
 import { Button, Input } from 'antd';
 import { PlusOutlined, CloseOutlined } from '@ant-design/icons';

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { PlusOutlined, CloseOutlined } from '@ant-design/icons';
-import { Modal, Typography } from 'antd';
+import { Modal } from 'antd';
 import { createTask, testApi } from '../../Api/func/user';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Draggable } from 'react-smooth-dnd';
@@ -50,7 +50,6 @@ function Cards(props) {
             //user
             const user = await getUserInfor();
             if(user) {
-                console.log("Thong tin nguoi dung:",user);
                 setuser(user);
             }
         }
@@ -76,7 +75,7 @@ function Cards(props) {
                 {props.task.map((card, index) => (
                     <Draggable key={index}>
                         <div className="card-item" key={index}>
-                            <button className="typography" onClick={()=>showModal(card)}>{card.title}</button>
+                            <button className="typography btn-card" onClick={()=>showModal(card)}>{card.title}</button>
                         </div>
                     </Draggable>
                 ))
@@ -89,11 +88,9 @@ function Cards(props) {
                         <button type="button" className="button" onClick={onSubmit} >Add task</button>
                         <CloseOutlined onClick={() => setOpen(false)} style={{ cursor: 'pointer', marginLeft: '80px', fontSize: '20px' }} />
                     </div>
-                ) : (
-                    <button onClick={() => setOpen(!open)} className="add-task" > <PlusOutlined /> Add task</button>
-                )}
+                ) : (<button onClick={() => setOpen(!open)} className="add-task" > <PlusOutlined /> Add task</button>)}
             </div>
-            <Modal width={1000} centered title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+            <Modal width={1000} centered title="" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
                 <Task obj={task} user={user} />
             </Modal>
         </div >

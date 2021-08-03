@@ -1,66 +1,346 @@
-import React from 'react';
-import {  LockOutlined , PlusOutlined} from '@ant-design/icons';
-import {Button, Layout,  Avatar , Menu, Dropdown} from 'antd';
+import React, { useEffect, useState, useRef } from 'react';
+import {  PlusOutlined } from '@ant-design/icons';
+import { Button, Select, Avatar } from 'antd';
+import './header2.css';
+import { deleteUserToBoardApi, getAllUserBoard, getAllUserToAddToBoard, postUserToBoardApi } from '../Api/func/user';
 
-function Header2() {
-    const styleHead2 = {
-        background: '#6D8DDF',
-        height: '60px',
-        marginTop: '6px',
-        padding: '0px'
-    };
+function Header2(id) {
     const styleButton = {
-        margin:'auto 5px',
+        margin: 'auto 5px',
         background: '#B9CFFB',
-        color:'#fff', 
-        fontWeight:'bold', 
-        height:'40px',
+        color: '#fff',
+        fontWeight: 'bold',
+        height: '40px',
         border: 'none',
     };
     const styleAvatar = {
+        width: "40px",
+        height: "40px",
         color: '#000',
+        textAlign: "center",
         backgroundColor: '#fff',
         fontSize: '12px',
         fontWeight: '500',
-        margin: 'auto 1px auto 0'
+        borderRadius: '50%'
     };
-    const styleAvatarPlus = {
-        color: '#fff',
-        backgroundColor: '#84ABF7',
-        fontSize: '12px',
-        fontWeight: '500',
-        margin: 'auto 0'  
-    };
-    const { Header} = Layout;
-    const menu = (
-        <Menu >
-          <Menu.Item>
-            Change Theme
-          </Menu.Item>
-          <Menu.Item>
-            Hide Board
-          </Menu.Item>
-        </Menu>
-      );
+
+    const invite_popup = {
+        width: "300px",
+        height: "400px",
+        position: 'absolute',
+        top: '33px',
+        left: '4px',
+        backgroundColor: '#ffffff',
+        border: 'solid 1px #e7eaf0',
+        borderRadius: '5px',
+        zIndex: '1'
+    }
+
+    //state
+    const [userSearch, setuserSearch] = useState([]);
+    const [userAdded, setuserAdded] = useState([]);
+    const [email, setemail] = useState("");
+    const [error, seterror] = useState("1");
+    const [users, setusers] = useState([]);//danh sach nguoi trong bang
+    const [userDetail, setuserDetail] = useState({})
+
+    //ref
+    const textInput = useRef(null);
+
+    //ẩn hiện form thêm người dùng vào bảng
+    const btnInviteOnclick = () => {
+        var x = document.getElementById("invitePopup");
+        document.getElementById("focus").focus();
+        x.classList.toggle("isHide");
+        const userDetail = document.getElementById("detail-user");
+        userDetail.classList.add("isHide");
+        setuserSearch([]);
+        setuserAdded([]);
+        seterror("1");
+        textInput.current.focus();
+        // setemail("");
+    }
+
+    //đóng invite
+    const btnCloseInviteOnClick = () => {
+        var x = document.getElementById("invitePopup");
+        x.classList.add("isHide");
+    }
+
+    //change email
+    const EmailOnChange = (e) => {
+        if (e.target.value) {
+            setemail(e.target.value);
+        }
+    }
+
+    //Đóng popup danh sách người dùng trong bảng - X
+    const btnCloseListUser = () => {
+        const dom = document.getElementById("popup-list-users");
+        dom.classList.add("isHide");
+    }
+
+    //Tìm Kiếm người dùng
+    const btnSearchOnClick = async (e) => {
+        try {
+            var users = await getAllUserToAddToBoard({
+                boardId: id.id,
+                keyword: email
+            });
+
+            console.log(users.data);
+            if (users.data.length > 0) {
+                setuserSearch(users.data);
+                seterror("1");
+            }
+            else {
+                seterror("2");
+                setuserSearch([]);
+            }
+        } catch (ex) {
+            seterror("Không tìm thấy kết quả");
+            setuserSearch([]);
+        }
+    }
+
+    //Thêm vào danh sách add
+    const addToListInvite = (e) => {
+        if (!userAdded.includes(e)) {
+            setuserAdded([...userAdded, e]);
+        }
+    }
+
+    //Xoá khỏi danh sách mời vào bảng
+    const removeToListInvite = (obj) => {
+        console.log("obj Remove: ", obj)
+        var arr = userAdded;
+        console.log("arr: ", arr)
+        for (let i = 0; i < arr.length; i++) {
+            if (obj.id === arr[i].id) {
+                arr.splice(i, 1);
+            }
+        }
+        setuserAdded([...arr]);
+
+    }
+
+    //thêm người vào bảng
+    const btnAddUserOnClick = async (e) => {
+        if (userAdded.length > 0) {
+            for (let i = 0; i < userAdded.length; i++) {
+                var u_id = userAdded[i].id;
+                var b_id = id.id;
+                let user_b = {
+                    userId: u_id,
+                    // boardId: b_id,
+                    fullName: userAdded[i].fullName,
+                    email: userAdded[i].email
+                }
+                // console.log(user_b)
+                await postUserToBoardApi({
+                    userId: u_id,
+                    boardId: b_id
+                }).then(res => {
+                    console.log("res: ", res);
+                    setusers([...users, user_b])
+                });
+            }
+            btnCloseInviteOnClick();
+        }
+    }
+
+    //Hien thi danh sach nguoi dung
+    const showModelDetailUser = () => {
+        //An Hien danh sach
+        const dom = document.getElementById("popup-list-users");
+        dom.classList.toggle("isHide");
+
+        //an chi tiet
+        const domDetail = document.getElementById("detail-user");
+        domDetail.classList.add("isHide");
+    }
+
+    const { Option } = Select;
+
+    // Get all user
+    const getAllUsers = async () => {
+        const users = await getAllUserBoard({
+            boardId: id.id
+        });
+        return users;
+
+    }
+
+    // Chi tiết user
+    const DetailUser = (obj) => {
+        //an danh sach
+        const domList = document.getElementById("popup-list-users");
+        domList.classList.add("isHide");
+        //hien thi chi tiet
+        const dom = document.getElementById("detail-user");
+        dom.classList.toggle("isHide");
+        //an invite
+        const invite = document.getElementById("invitePopup");
+        invite.classList.add("isHide")
+        setuserDetail(obj);
+    }
+
+    //Đóng chi tiết người dùng
+    const btnCloseOnClick = () => {
+        const dom = document.getElementById("detail-user");
+        dom.classList.add("isHide");
+    }
+
+    //Xử lý Rời khỏi bảng
+    const btnLeaveUserOnClick = async () => {
+        console.log("Chi tiết ngừi dùng rời khỏi bảng: ", userDetail)
+        await deleteUserToBoardApi({
+            userId: userDetail.id,
+            boardId: id.id
+        }).then(async () => {
+            const allUsers = await getAllUsers();
+            if (allUsers) {
+                const dom = document.getElementById("detail-user");
+                dom.classList.add("isHide");
+                setusers(allUsers.data);
+            }
+
+        });
+    }
+    // useEffect
+
+    const getAll = async () => {
+        const allUsers = await getAllUsers();
+        if (allUsers) {
+            setusers(allUsers.data);
+        }
+    }
+    useEffect(() => {
+        getAll();
+    }, []);
+
     return (
-        <Header style={styleHead2}>
-            <div style={{margin:'auto 10px', display:'flex', justifyContent:'space-between'}}>
-                    <div>
-                        <Button style={styleButton}>Name</Button>
-                        <Button style={styleButton}><LockOutlined /> Private</Button>
-                        <Avatar style={styleAvatar}> H </Avatar>
-                        <Avatar style={styleAvatar}> L </Avatar>
-                        <Avatar style={styleAvatarPlus}>
-                            <PlusOutlined/>1 
-                        </Avatar>
-                        <Button style={styleButton}>Invite</Button>
-                    </div>   
-                    <Dropdown overlay={menu} placement="bottomRight" arrow>
-                        <Button style={styleButton}>Menu</Button>
-                    </Dropdown>    
+        <nav className="header">
+            <div className="content" >
+                <div className="abc">
+                    <Select defaultValue="Board" style={{ width: 110, margin: 'auto 5px auto 0', color: '#000', fontWeight: '500' }} >
+                        <Option value="Board">Board</Option>
+                    </Select>
+                    <button className="button-hearder" >Name</button>
+                    {/* <button className="button-hearder" ><LockOutlined /> Private</button> */}
+                    {
+                        users.map((user, index) => {
+                            return (index < 2) ?
+                                <Button onClick={() => DetailUser(user)} key={user.id} style={styleAvatar}>{(user.fullName) ? user.fullName.charAt(0) : ""}</Button>
+                                : "";
+                        })
+                    }
+
+                    {/* Chi tiết người dùng */}
+                    <div id="detail-user" className="isHide">
+                        <button onClick={btnCloseOnClick} className="btnClose">X</button>
+                        <div className="flex detail-user__header">
+                            <div className="header__avatar">
+                                <Avatar className="circle_avatar">{(userDetail.fullName) ? userDetail.fullName.charAt(0).toUpperCase() : ""}</Avatar>
+                            </div>
+
+                            <div className="infor-user">
+                                <div className="infor-user_name">{userDetail.fullName}</div>
+                                <div className="infor-user_email">{userDetail.email}</div>
+                            </div>
+                        </div>
+                        {/* 3 chúc năng */}
+                        <div className="btn-option-user">
+                            <Button className="btn">Thay Đổi quyền</Button>
+                        </div>
+                        <div className="btn-option-user">
+                            <Button className="btn">Xem hoạt đông của thành viên trong bảng</Button>
+                        </div>
+                        <div className="btn-option-user">
+                            <Button onClick={btnLeaveUserOnClick} className="btn">Rời khỏi bảng</Button>
+                        </div>
+                    </div>
+
+                    <Button onClick={showModelDetailUser} style={styleAvatar} className="btn-plus-user">
+                        <PlusOutlined />{((users.length - 2) > 0) ? (users.length - 2) : ""}
+                    </Button>
+
+                    <div id="popup-list-users" className="popup-list-users isHide">
+                        <button onClick={btnCloseListUser} className="btnCloseListUser">X</button>
+                        <div style={{ margin: "10px 0 0 20px", lineHeight: "20px" }} >Danh sách người dùng</div>
+                        <hr style={{ width: "90%", margin: "10px 0 0 10px" }} />
+                        {
+                            users.map((user, index) => (
+                                <Button onClick={() => DetailUser(user)} key={index} style={styleAvatar}>
+                                    {(user.fullName) ? user.fullName.charAt(0) : ""}
+                                </Button>
+                            ))
+                        }
+                    </div>
+                    {/* Button Invite */}
+                    <span style={{ position: "relative" }}>
+                        <button onClick={btnInviteOnclick} className="button-hearder">
+                            Invite
+                        </button>
+                        <div id="invitePopup" style={invite_popup} className="isHide">
+                            <button onClick={btnCloseInviteOnClick} className="btnClose" style={{ lineHeight: "normal" }}>X</button>
+                            <div style={{ height: "20px", textAlign: "center", lineHeight: "20px", marginTop: "5px", alignItems: "center" }}>
+                                Mời vào bảng
+                            </div>
+                            <hr className="hr" />
+                            <div>
+                                <input id="focus" ref={textInput} onChange={EmailOnChange} style={{ height: "32px", marginLeft: "13px" }} type="text" placeholder="Địa chỉ email hoặc tên" />
+                                <Button style={{ marginLeft: "10px" }} onClick={btnSearchOnClick}>Tìm Kiếm</Button>
+                            </div>
+
+                            <div>
+                                <ul className="ul">
+                                    {
+                                        userSearch.map((obj, index) => (
+                                            <li key={index} style={{ height: "25px", marginTop: "5px" }}>
+                                                <button className="button-add"
+                                                    onClick={() => addToListInvite(obj)}
+                                                >
+                                                    {obj.email}
+                                                </button>
+                                            </li>
+                                        ))
+                                    }
+                                </ul>
+                            </div>
+
+                            <div style={{ textAlign: "center", fontSize: "16px" }}>{(error !== "1") ? "Không tìm thấy" : ""}</div>
+                            <hr className="hr" />
+
+                            <div>
+                                <ul className="ul">
+                                    {
+                                        userAdded.map((obj, index) => (
+                                            <li key={index} style={{ height: "25px", marginTop: "5px" }}>
+                                                <button className="button-add"
+                                                    onClick={() => removeToListInvite(obj)}
+                                                >
+                                                    {obj.email}
+                                                </button>
+                                            </li>
+                                        ))
+                                    }
+                                </ul>
+                            </div>
+
+                            <div style={{ position: "absolute", bottom: "10px", left: "25px" }}>
+                                <button onClick={btnAddUserOnClick} className="btnAddUser" disabled={(userAdded.length === 0)}>
+                                    THÊM VÀO BẢNG
+                                </button>
+                            </div>
+                        </div>
+                    </span>
+                </div>
+                <div className="abc">
+                    <button style={styleButton}>Menu</button>
+                </div>
             </div>
-            
-        </Header>
+        </nav>
     )
 }
 

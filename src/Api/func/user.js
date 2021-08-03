@@ -64,6 +64,59 @@ export const getComments = async (body) =>
     GetData(url.urlGetAllComment, body)
         .then(res => res)
         .catch(err => err)
-
-
-
+export const postCommentApi = async (body) =>
+    PostData(url.urlPostComment, body)
+        .then(res => res)
+        .catch(err => err)
+export const getAllUserBoard = async (body) =>
+    GetData(url.urlGetAllUserBoard, body)
+        .then(res => res)
+        .catch(err => err)
+export const getAllUserToAddToBoard = async (body) =>
+    GetData(url.urlGetAllUserToAddToBoard, body)
+        .then(res => res)
+        .catch(err => err)
+export const postUserToBoardApi = async (body) =>
+    PostData(url.urlPostUserToBoard, body)
+        .then(res => res)
+        .catch(err => err)
+export const getAllUserInTask = async (body) =>
+    GetData(url.urlGetAllUserInTask, body)
+        .then(res => res)
+        .catch(err => err)
+export const getUsersToAddToTask = async (body) =>
+    GetData(url.urlGetUsersToAddToTask, body)
+        .then(res => res)
+        .catch(err => err)
+export const postUserToTaskApi = async (body) =>
+    PostData(url.urlPostUserToTask, body)
+        .then(res => res)
+        .catch(err => err)
+export const updateImageTask = async (body) =>
+    PutData(url.urlPutImageTask, body)
+        .then(res => res)
+        .catch(err => err)
+export const getDeadlineByTaskIdApi = async (body) =>
+    GetData(url.urlGetDeadlineByTaskId, body)
+        .then(res => res)
+        .catch(err => err)
+export const postDeadlineToTaskApi = async (body) =>
+    PostData(url.urlPostDeadline, body)
+        .then(res => res)
+        .catch(err => err)
+export const updateDeadlineApi = async (body) =>
+    PutData(url.urlUpdateDealine, body)
+        .then(res => res)
+        .catch(err => err)
+export const deleteDeadlineApi = async (body) =>
+    DeleteData(url.urlDeleteDeadline, body)
+        .then(res => res)
+        .catch(err => err)
+export const deleteUserToBoardApi = async (body) =>
+    DeleteData(url.urlDeleteUserBoard, body)
+        .then(res => res)
+        .catch(err => err)
+export const deleteUserToTaskApi = async (body) =>
+    DeleteData(url.urlDeleteUserToTask, body)
+        .then(res => res)
+        .catch(err => err)

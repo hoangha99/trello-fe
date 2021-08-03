@@ -16,5 +16,19 @@ const url = {
     urlupdateDisplayOrderTask: root + "task/update-display-order",
     urlDeleteWorkList: root + "work-list/delete",
     urlGetAllComment: root + "comment/get-all",
+    urlPostComment: root+"comment/create",
+    urlGetAllUserBoard: root+"board/get-all-user-in-board",
+    urlGetAllUserToAddToBoard:root+"board/get-list-person-to-add-to-board",
+    urlPostUserToBoard: root+"board/add-user-to-board",
+    urlGetAllUserInTask: root+"task/get-all-person-in-task",
+    urlGetUsersToAddToTask: root+"task/get-list-person-to-add-to-task",
+    urlPostUserToTask: root+"task/add-person-to-task",
+    urlPutImageTask: root+"task/update-image",
+    urlGetDeadlineByTaskId: root+"deadline/get-deadline",
+    urlPostDeadline: root+"deadline/create",
+    urlUpdateDealine:root+"deadline/update",
+    urlDeleteDeadline: root+"deadline/delete-deadline",
+    urlDeleteUserBoard: root+"board/delete-person-from-board",
+    urlDeleteUserToTask: root+"task/delete-person-to-task"
 }
 export default url;

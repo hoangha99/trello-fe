@@ -7,7 +7,7 @@ function Board(props) {
     return (
         <div>
             <Header />
-            <Header2/>
+            <Header2 id={props.match.params.id}/>
             <List id = {props.match.params.id}/>
         </div>
     );

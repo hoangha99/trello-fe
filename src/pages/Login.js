@@ -2,7 +2,7 @@ import React, {useState } from 'react';
 
 import { loginApi } from '../Api/func/user';
 import '../../src/style.css'
-import { Link, Redirect, useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 
 const Login = (props) => {

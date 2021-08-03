@@ -16,6 +16,11 @@
     text-align: left;
     cursor: pointer;
     margin: 10px 15px;
+    width: 90%;
+    border: none;
+}
+.typography:hover{
+    background-color: #f7f8ff;
 }
 .add-task{
     border: none;

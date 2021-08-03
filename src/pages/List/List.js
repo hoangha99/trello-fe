@@ -103,6 +103,7 @@ function List(props) {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [listId, setListId] = useState("");
     const showModal = (listId) => {
+        console.log("listID: "+listId);
         setListId(listId);
         setIsModalVisible(true);
     };
@@ -150,7 +151,7 @@ function List(props) {
                             <div className="title" >
                                 <Title listId={list.workListId} title={list.title} resetTitle={resetTitle}></Title>
                                 <Dropdown trigger="click"
-                                    overlay={<Button onClick={() => showModal(list.id)}
+                                    overlay={<Button onClick={() => showModal(list.workListId)}
                                         style={{ border: 'none', padding: '10px', color: '#000', borderRadius: '3px', cursor: 'pointer' }}
                                     >Delete List
                                     </Button>}

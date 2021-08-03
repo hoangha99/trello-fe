@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { registerApi } from '../Api/func/user';
 import '../../src/style.css'
 import { Link, Redirect } from "react-router-dom";
